@@ -14,6 +14,7 @@
 		8B0752702064B5DC00187431 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B07526E2064B5DC00187431 /* LaunchScreen.storyboard */; };
 		8B07527B2064B5DC00187431 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B07527A2064B5DC00187431 /* TrackerTests.swift */; };
 		8B0752862064B5DC00187431 /* TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0752852064B5DC00187431 /* TrackerUITests.swift */; };
+		8B075294207F4F8800187431 /* RatingViewControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B075293207F4F8800187431 /* RatingViewControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		8B0752812064B5DC00187431 /* TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B0752852064B5DC00187431 /* TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITests.swift; sourceTree = "<group>"; };
 		8B0752872064B5DC00187431 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B075293207F4F8800187431 /* RatingViewControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				8B07526C2064B5DC00187431 /* Assets.xcassets */,
 				8B07526E2064B5DC00187431 /* LaunchScreen.storyboard */,
 				8B0752712064B5DC00187431 /* Info.plist */,
+				8B075293207F4F8800187431 /* RatingViewControl.swift */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B075294207F4F8800187431 /* RatingViewControl.swift in Sources */,
 				8B0752682064B5DC00187431 /* ViewController.swift in Sources */,
 				8B0752662064B5DC00187431 /* AppDelegate.swift in Sources */,
 			);

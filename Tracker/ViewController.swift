@@ -19,6 +19,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     @IBOutlet weak var photoView: UIImageView!
     
+    @IBOutlet weak var ratingControl: RatingViewControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -71,13 +73,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion: nil)
         
-        movieNameLbl.text = "Photo was added successfully"
+        // movieNameLbl.text = "Photo was added successfully"
         
     }
-    @IBAction func setDefault(_ sender: UIButton)
-    {
-        movieNameLbl.text = "Default"
-    }
+    
     
 }
 
