@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MovieViewController.swift
 //  Tracker
 //
 //  Created by Nam ML on 2018-03-22.
@@ -7,13 +7,14 @@
 //
 
 import UIKit
+// this gives you more control over the messages appear and how they are saved
+import os.log
 
-class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MovieViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     //MARK: Properties
     
    
-    @IBOutlet weak var movieNameLbl: UILabel!
     
     @IBOutlet weak var MovieTb: UITextField!
     
@@ -21,11 +22,17 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     
     @IBOutlet weak var ratingControl: RatingViewControl!
     
+    var movie:Movie?
+    
+    @IBOutlet weak var saveBtn: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         // Handle the text field's user input through delegate callbacks
         MovieTb.delegate = self
+        // Enable the save button only if the text field has a valid name
+        updateSaveButtonState()
     }
 
     //MARK: UITextFieldDelegate
@@ -38,7 +45,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        movieNameLbl.text = MovieTb.text
+        // movieNameLbl.text = MovieTb.text
+        updateSaveButtonState()
+        // make the textFiled text become navigation title
+        navigationItem.title = textField.text
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Disable Save Btn while editing
+        saveBtn.isEnabled = false
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -54,6 +69,30 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         photoView.image = selectedImage
         
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Navigation
+    
+    @IBAction func cancelAdding(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    // configure the controller before it is presented
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // need to call super since it is an override function
+        super.prepare(for: segue, sender: sender)
+        // configure the destination view controller when the save button is pressed
+        guard let button = sender as? UIBarButtonItem, button == saveBtn else {
+            os_log("The button was not pressed, cancelling", log: OSLog.default, type: .debug)
+            return
+        }
+        
+        let movieName = MovieTb.text ?? "" // unwrap the optional string
+        let photo = photoView.image
+        let rating = ratingControl.rating
+        
+        // Set the movie data to be passed to MovieTableViewController after the unwind seque
+        movie = Movie(movieName: movieName, photo: photo!, rating: rating)
     }
     
     //MARK: Actions
@@ -75,6 +114,14 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
         // movieNameLbl.text = "Photo was added successfully"
         
+    }
+    
+    //MARK: Private Methods
+    
+    private func updateSaveButtonState() {
+        // Disable save if the name is empty
+        let text = MovieTb.text ?? ""
+        saveBtn.isEnabled = !text.isEmpty
     }
     
     
