@@ -24,8 +24,15 @@ class MovieTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.title = "Change"
         navigationItem.leftBarButtonItem?.tintColor = UIColor.red
-        // load the data
-        loadSampleMovies()
+        
+        // load any changes/saves from before otherwise load sample data 
+        if let savedMovies = loadMovies() {
+            movies += savedMovies
+        } else {
+            // load the data
+            loadSampleMovies()
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -82,6 +89,7 @@ class MovieTableViewController: UITableViewController {
         if editingStyle == .delete {
             // remove the movie object from the array
             movies.remove(at: indexPath.row)
+            saveMovies()
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
@@ -150,6 +158,9 @@ class MovieTableViewController: UITableViewController {
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
             
+            // Save the movies
+            saveMovies()
+            
         }
     }
     
@@ -173,6 +184,19 @@ class MovieTableViewController: UITableViewController {
         }
         
         movies += [movie1, movie2, movie3]
+    }
+    
+    private func saveMovies() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(movies, toFile: Movie.savingURL.path)
+        if isSuccessfulSave {
+            os_log("Movies were saved.", log: OSLog.default, type: .debug)
+        } else {
+            os_log("Failed to save movies...", log: OSLog.default, type: .error)
+        }
+    }
+    
+    private func loadMovies() -> [Movie]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: Movie.savingURL.path) as? [Movie]
     }
 
 }
