@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mVx-Cf-Gg1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14111" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mVx-Cf-Gg1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -38,7 +38,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DwI-Sh-7em" customClass="RatingViewControl" customModule="Tracker" customModuleProvider="target">
+                                        <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DwI-Sh-7em" customClass="RatingViewControl" customModule="Tracker" customModuleProvider="target">
                                             <rect key="frame" x="103" y="40" width="250" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </stackView>
@@ -48,6 +48,7 @@
                                     <outlet property="movieImage" destination="2mM-W9-f2D" id="kah-mT-3ow"/>
                                     <outlet property="movieNameLbl" destination="aaH-K3-OZj" id="RgN-Bb-tiT"/>
                                     <outlet property="ratingStar" destination="DwI-Sh-7em" id="mVH-G6-Vlg"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="ShowDetail" id="Uvv-Up-euJ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -184,4 +185,7 @@
     <resources>
         <image name="test" width="540" height="540"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Uvv-Up-euJ"/>
+    </inferredMetricsTieBreakers>
 </document>

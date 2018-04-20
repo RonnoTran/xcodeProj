@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class MovieTableViewController: UITableViewController {
     
@@ -18,6 +19,11 @@ class MovieTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Use the edit button item provided by the table view controller become the left button of the nav bar
+        
+        navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.leftBarButtonItem?.title = "Change"
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.red
         // load the data
         loadSampleMovies()
     }
@@ -31,6 +37,16 @@ class MovieTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if (self.isEditing) {
+            self.editButtonItem.title = "Finish"
+        } else {
+            self.editButtonItem.title = "Change"
+        }
+        
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,25 +71,23 @@ class MovieTableViewController: UITableViewController {
         return cell
     }
 
-    /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            // remove the movie object from the array
+            movies.remove(at: indexPath.row)
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
 
     /*
     // Override to support rearranging the table view.
@@ -90,26 +104,52 @@ class MovieTableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        super.prepare(for: segue, sender: sender)
+        switch (segue.identifier ?? "") {
+        case "AddMovie":
+            os_log("Adding new Movie", log: OSLog.default, type: .debug)
+        case "ShowDetail":
+            guard let movieDetailViewController = segue.destination as? MovieViewController
+                else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let selectedMovieCell = sender as? MovieTableViewCell else {
+                fatalError("Unexpected sender: \(sender)")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: selectedMovieCell) else {
+                fatalError("The selected cell is not displaying")
+            }
+            
+            let selectedMovie = movies[indexPath.row]
+            movieDetailViewController.movie = selectedMovie
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+        }
     }
-    */
     
     //MARK: Actions
     
     @IBAction func unwindToMovieList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? MovieViewController, let movie = sourceViewController.movie {
-            // Add new Movie
-            let newIndexPath = IndexPath(row: movies.count, section: 0)
-            // append to the list after added new movie
-            movies.append(movie)
-            // animates the addition of a new row to the table view
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // update the existing movie
+                movies[selectedIndexPath.row] = movie
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                // Add new Movie
+                let newIndexPath = IndexPath(row: movies.count, section: 0)
+                // append to the list after added new movie
+                movies.append(movie)
+                // animates the addition of a new row to the table view
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
+            
         }
     }
     

@@ -31,6 +31,13 @@ class MovieViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         // Do any additional setup after loading the view, typically from a nib.
         // Handle the text field's user input through delegate callbacks
         MovieTb.delegate = self
+        // Update movie array
+        if let movie = movie {
+            navigationItem.title = movie.movieName
+            MovieTb.text = movie.movieName
+            photoView.image = movie.photo
+            ratingControl.rating = movie.rating
+        }
         // Enable the save button only if the text field has a valid name
         updateSaveButtonState()
     }
@@ -74,7 +81,16 @@ class MovieViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     //MARK: Navigation
     
     @IBAction func cancelAdding(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        // check if the movie detail scene is presented by user tapping the Add Button
+        let isAddingMovie = presentingViewController is UINavigationController
+        if isAddingMovie {
+            dismiss(animated: true, completion: nil)
+        // check if the movie detail scene is pushed onto a navigation stack and get reference to it
+        } else if let owningNavigationController = navigationController {
+            owningNavigationController.popViewController(animated: true)
+        } else {
+            fatalError("The movide detail scene is not pushed onto navigation stack")
+        }
     }
     // configure the controller before it is presented
     
